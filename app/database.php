@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '154.209.4.135',
+    'hostname'        => '192.168.0.106',
     // 数据库名
     'database'        => 'gzj',
     // 用户名
     'username'        => 'root',
     // 密码
-    'password'        => 'Aa123123',
+    'password'        => 'root',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
