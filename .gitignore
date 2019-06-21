@@ -1,4 +1,3 @@
 runtime/*
 *.log
 .idea/*
-vendor/*
