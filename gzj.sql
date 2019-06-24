@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 23/06/2019 22:47:15
+ Date: 24/06/2019 12:19:40
 */
 
 SET NAMES utf8mb4;
@@ -42,7 +42,7 @@ CREATE TABLE `gzj_admin`  (
 -- ----------------------------
 -- Records of gzj_admin
 -- ----------------------------
-INSERT INTO `gzj_admin` VALUES (1, 'Tplay', 'admin', '31c64b511d1e90fcda8519941c1bd660', 1, 1510885948, 1517622948, 1561274061, '127.0.0.1', 1);
+INSERT INTO `gzj_admin` VALUES (1, 'Tplay', 'admin', '31c64b511d1e90fcda8519941c1bd660', 1, 1510885948, 1517622948, 1561348812, '127.0.0.1', 1);
 
 -- ----------------------------
 -- Table structure for gzj_admin_cate
@@ -81,7 +81,7 @@ CREATE TABLE `gzj_admin_log`  (
   INDEX `id`(`id`) USING BTREE,
   INDEX `admin_id`(`admin_id`) USING BTREE,
   INDEX `create_time`(`create_time`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 48 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 49 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gzj_admin_log
@@ -133,6 +133,7 @@ INSERT INTO `gzj_admin_log` VALUES (44, 51, 1, '127.0.0.1', '', 1561013454);
 INSERT INTO `gzj_admin_log` VALUES (45, 51, 1, '127.0.0.1', '', 1561013604);
 INSERT INTO `gzj_admin_log` VALUES (46, 50, 1, '127.0.0.1', '', 1561092946);
 INSERT INTO `gzj_admin_log` VALUES (47, 50, 1, '127.0.0.1', '', 1561274061);
+INSERT INTO `gzj_admin_log` VALUES (48, 50, 1, '127.0.0.1', '', 1561348812);
 
 -- ----------------------------
 -- Table structure for gzj_admin_menu
@@ -290,7 +291,8 @@ CREATE TABLE `gzj_attached`  (
   `filesize` int(32) NULL DEFAULT NULL COMMENT '文件大小',
   `upload_ip` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '上传ip',
   `create_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '附件表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -365,7 +367,9 @@ CREATE TABLE `gzj_job_wanted`  (
   `create_time` int(16) NULL DEFAULT NULL,
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '求职者信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -406,7 +410,10 @@ CREATE TABLE `gzj_msg_recruit`  (
   `create_time` int(16) NULL DEFAULT NULL,
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE,
+  INDEX `update_time`(`update_time`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '招聘信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -428,7 +435,10 @@ CREATE TABLE `gzj_msg_shop`  (
   `create_time` int(16) NULL DEFAULT NULL,
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE,
+  INDEX `update_time`(`update_time`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商家信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -491,7 +501,11 @@ CREATE TABLE `gzj_svip`  (
   `create_time` int(16) NOT NULL COMMENT '开通时间',
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE,
+  INDEX `expiration_time`(`expiration_time`) USING BTREE,
+  INDEX `create_time`(`create_time`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户超级会员表' ROW_FORMAT = Fixed;
 
 -- ----------------------------
@@ -533,7 +547,8 @@ CREATE TABLE `gzj_user`  (
   `create_time` int(16) NULL DEFAULT NULL,
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`, `login_user`) USING BTREE
+  PRIMARY KEY (`id`, `login_user`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表\r\n' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -542,7 +557,7 @@ CREATE TABLE `gzj_user`  (
 DROP TABLE IF EXISTS `gzj_user_authentication`;
 CREATE TABLE `gzj_user_authentication`  (
   `id` int(8) NOT NULL AUTO_INCREMENT,
-  `uid` int(8) NOT NULL COMMENT '用户id',
+  `user_id` int(8) NOT NULL COMMENT '用户id',
   `contacts` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '联系人',
   `tele` int(11) NOT NULL COMMENT '联系电话',
   `longitude` double(16, 8) NULL DEFAULT NULL COMMENT '经度',
@@ -556,7 +571,9 @@ CREATE TABLE `gzj_user_authentication`  (
   `create_time` int(16) NULL DEFAULT NULL,
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商家认证表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -572,7 +589,9 @@ CREATE TABLE `gzj_user_consume_record`  (
   `create_time` int(16) NULL DEFAULT NULL,
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '消费记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -587,7 +606,9 @@ CREATE TABLE `gzj_user_log`  (
   `create_time` int(16) NULL DEFAULT NULL,
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户登录日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -603,7 +624,10 @@ CREATE TABLE `gzj_user_recharge_record`  (
   `create_time` int(16) NULL DEFAULT NULL,
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE,
+  INDEX `status`(`status`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户充值记录表' ROW_FORMAT = Fixed;
 
 -- ----------------------------
@@ -641,7 +665,8 @@ CREATE TABLE `gzj_work_pass`  (
   `create_time` int(16) NULL DEFAULT NULL,
   `update_time` int(16) NULL DEFAULT NULL,
   `delete_time` int(16) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '工作经历表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
