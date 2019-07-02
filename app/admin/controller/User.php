@@ -12,6 +12,7 @@ use \think\Session;
 use app\common\model\User as userModel;//用户模型
 use app\admin\model\AdminMenu;
 use app\admin\controller\Permissions;
+use app\admin\controller\Common;
 class User extends Permissions
 {
     /**
@@ -80,6 +81,22 @@ class User extends Permissions
     		}
     	} 
     }
+
+    public function excelexport(){
+        
+        $where['identity']=0;
+        
+        $data = Db::name('user')->where($where)
+                    ->order('id')
+                    ->field('id,login_user,nickname,wx_appid,balance,create_time,status')
+                    ->select();
+       
+        $excelName = '个人用户信息';
+        $Header = array('id','手机号','昵称','微信号','余额','创建时间','状态');
+        exportexcel($data,$Header,$excelName);
+    }
+
+    
 
     /**
      * 用户删除删除

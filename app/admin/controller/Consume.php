@@ -45,38 +45,18 @@ class Consume extends Permissions
         return $this->fetch();
     }
 
-    /**
-     * 用户状态修改（冻结，正常）
-     * @return [type] [description]
-     */
-    public function publish()
-    {
-    	//获取用户id
-    	$id = $this->request->has('id') ? $this->request->param('id', 0, 'intval') : 0;
+    //excel导出
+    public function excelexport(){
+        
+        $data = Db::name('user_consume_record')
+                    ->alias('guc')
+                    ->join('gzj_user gu','guc.user_id = gu.id')
+                    ->field('guc.id,gu.nickname,guc.money,guc.type,guc.content,guc.create_time')
+                    ->select();
 
-    	$model = new userModel();
-
-    	if($id > 0) {
-    		//是修改操作
-    		if($this->request->isPost()) {
-    			//是提交操作
-    			$post = $this->request->post();
-
-                $post['update_time'] = time();
-	            if(false == $model->allowField(true)->save($post,['id'=>$id])) {
-	            	return $this->error('修改失败');
-	            } else {
-                   
-	            	return $this->success('修改信息成功','admin/user/index');
-	            }
-    		} else {
-    			//非提交操作
-    			$info['user'] = $model->where('id',$id)->find();
-                $info['status'] = array(['status'=>0,'status_name'=>'正常'],['status'=>1,'status_name'=>'冻结']);
-    			$this->assign('info',$info);
-    			return $this->fetch();
-    		}
-    	} 
+        $excelName = '消费记录';
+        $Header = array('id','用户昵称','消费金额','消费类型','消费详情','创建时间');
+        exportexcel($data,$Header,$excelName);
     }
 
     /**

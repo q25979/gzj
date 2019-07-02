@@ -75,6 +75,40 @@ class Userbacklist extends Permissions
     }
 
 
+    //excel导出
+    public function excelexport(){
+        $where['gub.identify'] = 1;
+        $data = Db::name('user_backlist')
+                    ->alias('gub')
+                    ->join('gzj_user gu','gub.a_user_id = gu.id')
+                    ->join('gzj_user gus','gub.b_user_id = gus.id','LEFT')
+                    ->where($where)
+                    ->field('gub.id,gu.login_user a_login_user,gu.nickname a_nickname,gu.wx_appid a_wx_appid,gus.login_user b_login_user,gus.nickname b_nickname,gus.wx_appid b_wx_appid,gub.create_time')
+                    ->select();
+
+        $excelName = '商家黑名单';
+        $Header = array('id','商家手机号','商家昵称','商家微信号','黑名单用户手机号','黑名单用户昵称','黑名单用户微信号','创建时间');
+        exportexcel($data,$Header,$excelName);
+    }
+
+
+    //excel导出
+    public function personexcelexport(){
+        $where['gub.identify'] = 0;
+        $data = Db::name('user_backlist')
+                    ->alias('gub')
+                    ->join('gzj_user gu','gub.a_user_id = gu.id')
+                    ->join('gzj_user gus','gub.b_user_id = gus.id','LEFT')
+                    ->where($where)
+                    ->field('gub.id,gu.login_user a_login_user,gu.nickname a_nickname,gu.wx_appid a_wx_appid,gus.login_user b_login_user,gus.nickname b_nickname,gus.wx_appid b_wx_appid,gub.create_time')
+                    ->select();
+
+        $excelName = '个人黑名单';
+        $Header = array('id','用户手机号','用户昵称','用户微信号','黑名单商家手机号','黑名单商家昵称','黑名单商家微信号','创建时间');
+        exportexcel($data,$Header,$excelName);
+    }
+
+
     /**
      * 用户删除删除
      * @return [type] [description]

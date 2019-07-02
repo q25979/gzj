@@ -28,6 +28,12 @@ class Store extends Permissions
         if (isset($post['keywords']) and !empty($post['keywords'])) {
             $where['gu.nickname'] = ['like', '%' . $post['keywords'] . '%'];
         }
+        if (isset($post['contacts']) and !empty($post['contacts'])) {
+            $where['gms.contacts'] = ['like', '%' . $post['contacts'] . '%'];
+        }
+        if (isset($post['tele']) and !empty($post['tele'])) {
+            $where['gms.tele'] = ['like', '%' . $post['tele'] . '%'];
+        }
         if (isset($post['status'])) {
             $where['gms.type'] = $post['status'];
         }
@@ -80,6 +86,20 @@ class Store extends Permissions
     			return $this->fetch();
     		}
     	} 
+    }
+
+    public function excelexport(){
+        
+        $data = Db::name('msg_shop')
+                    ->alias('gms')
+                    ->join('gzj_user gu','gms.user_id = gu.id')
+                    ->join('gzj_attached ga','gms.attached_id = ga.id','LEFT')
+                    ->field('gms.id,gu.nickname,gms.contacts,gms.tele,gms.type,gms.longitude,gms.latitude,gms.addr,gms.area,gms.price,ga.filepath,gms.create_time')
+                    ->select();
+       
+        $excelName = '店铺信息';
+        $Header = array('id','商家昵称','联系人','联系电话','类型','经度','纬度','详细地址','面积','价格','附件信息','创建时间');
+        exportexcel($data,$Header,$excelName);
     }
 
     /**

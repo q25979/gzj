@@ -26,10 +26,16 @@ class Businessfirm extends Permissions
         $post = $this->request->param();
 
         if (isset($post['keywords']) and !empty($post['keywords'])) {
-            $where['corporate_name'] = ['like', '%' . $post['keywords'] . '%'];
+            $where['gua.corporate_name'] = ['like', '%' . $post['keywords'] . '%'];
         }
         if (isset($post['type'])) {
-            $where['type'] = $post['type'];
+            $where['gua.type'] = $post['type'];
+        }
+        if (isset($post['contacts']) and !empty($post['contacts'])) {
+            $where['gua.contacts'] = ['like', '%' . $post['contacts'] . '%'];
+        }
+        if (isset($post['tele']) and !empty($post['tele'])) {
+            $where['gua.tele'] =$post['tele'];
         }
  
         $where['gu.identity']=1;
@@ -81,6 +87,21 @@ class Businessfirm extends Permissions
     			return $this->fetch();
     		}
     	} 
+    }
+
+    public function excelexport(){
+        
+        
+        $where['used_car_type']=0;
+        
+        $data = Db::name('user_authentication')
+                    ->where($where)
+                    ->order('id')
+                    ->select();
+       
+        $excelName = '商家认证信息';
+        $Header = array('id','商家id','联系人','联系电话','经度','纬度','类型','是否个人二手车','营业执照','详细地址','公司名称','附件表id','创建时间','更新时间','删除时间');
+        exportexcel($data,$Header,$excelName);
     }
 
     /**

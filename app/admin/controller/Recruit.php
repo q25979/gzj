@@ -25,8 +25,11 @@ class Recruit extends Permissions
 
         $post = $this->request->param();
         $where = array();
-        if (isset($post['nickname']) and !empty($post['nickname'])) {
-            $where['gu.nickname'] = ['like', '%' . $post['nickname'] . '%'];
+        if (isset($post['contacts']) and !empty($post['contacts'])) {
+            $where['gmr.contacts'] = ['like', '%' . $post['contacts'] . '%'];
+        }
+        if (isset($post['tele']) and !empty($post['tele'])) {
+            $where['gmr.tele'] = ['like', '%' . $post['tele'] . '%'];
         }
         if (isset($post['corporate_name']) and !empty($post['corporate_name'])) {
             $where['gmr.corporate_name'] = ['like', '%' . $post['corporate_name'] . '%'];
@@ -47,38 +50,18 @@ class Recruit extends Permissions
         return $this->fetch();
     }
 
-    /**
-     * 用户状态修改（冻结，正常）
-     * @return [type] [description]
-     */
-    public function publish()
-    {
-    	//获取用户id
-    	$id = $this->request->has('id') ? $this->request->param('id', 0, 'intval') : 0;
 
-    	$model = new userModel();
-
-    	if($id > 0) {
-    		//是修改操作
-    		if($this->request->isPost()) {
-    			//是提交操作
-    			$post = $this->request->post();
-
-                $post['update_time'] = time();
-	            if(false == $model->allowField(true)->save($post,['id'=>$id])) {
-	            	return $this->error('修改失败');
-	            } else {
-                   
-	            	return $this->success('修改信息成功','admin/user/index');
-	            }
-    		} else {
-    			//非提交操作
-    			$info['user'] = $model->where('id',$id)->find();
-                $info['status'] = array(['status'=>0,'status_name'=>'正常'],['status'=>1,'status_name'=>'冻结']);
-    			$this->assign('info',$info);
-    			return $this->fetch();
-    		}
-    	} 
+    public function excelexport(){
+        
+        $data = Db::name('msg_recruit')
+                    ->alias('gmr')
+                    ->join('gzj_user gu','gmr.user_id = gu.id')
+                    ->field('gmr.id,gu.nickname,gmr.corporate_name,gmr.working_time,gmr.need_people,gmr.longitude,gmr.latitude,gmr.addr,gmr.salary_range,gmr.settlement_method,gmr.working_content,gmr.contacts,gmr.tele,gmr.create_time')
+                    ->select();
+       
+        $excelName = '招聘信息';
+        $Header = array('id','商家昵称','公司名称','工作时间','招聘人数','经度','纬度','详细地址','工资范围','工资结算','工作内容','联系人','联系电话','创建时间');
+        exportexcel($data,$Header,$excelName);
     }
 
     /**

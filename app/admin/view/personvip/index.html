@@ -34,6 +34,9 @@
           <div class="layui-input-inline">
             <input type="text" name="keywords" lay-verify="title" autocomplete="off" placeholder="请输入用户昵称" class="layui-input layui-btn-sm">
           </div>
+          <div class="layui-input-inline">
+            <input type="text" name="wx_appid" lay-verify="title" autocomplete="off" placeholder="请输入微信号" class="layui-input layui-btn-sm">
+          </div>
 
           <div class="layui-input-inline">
             <input type="text" name="login_user" lay-verify="title" autocomplete="off" placeholder="请输入手机号" class="layui-input layui-btn-sm">
@@ -41,6 +44,9 @@
          
           <button class="layui-btn layui-btn-danger layui-btn-sm" lay-submit="" lay-filter="serch">立即提交</button>
         </div>
+      </form>
+      <form class="layui-form" action="{:url('admin/personvip/excelexport')}" class="form-signin">
+        <button class="layui-btn  layui-btn-sm" style="margin: 0 10px;">导出数据</button>
       </form> 
     <table class="layui-table" lay-size="sm">
       <thead>

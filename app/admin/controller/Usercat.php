@@ -25,11 +25,14 @@ class Usercat extends Permissions
 
         $post = $this->request->param();
 
-         if (isset($post['nickname']) and !empty($post['nickname'])) {
-            $where['gu.nickname'] = ['like', '%' . $post['nickname'] . '%'];
-        }
         if (isset($post['corporate_name']) and !empty($post['corporate_name'])) {
             $where['guc.corporate_name'] = ['like', '%' . $post['corporate_name'] . '%'];
+        }
+        if (isset($post['contacts']) and !empty($post['contacts'])) {
+            $where['guc.contacts'] = ['like', '%' . $post['contacts'] . '%'];
+        }
+        if (isset($post['tele']) and !empty($post['tele'])) {
+            $where['guc.tele'] = ['like', '%' . $post['tele'] . '%'];
         }
         $where = array();
         $date = $model->alias('guc')
@@ -47,40 +50,18 @@ class Usercat extends Permissions
         return $this->fetch();
     }
 
-    /**
-     * 用户状态修改（冻结，正常）
-     * @return [type] [description]
-     */
-    public function publish()
-    {
-    	//获取用户id
-    	$id = $this->request->has('id') ? $this->request->param('id', 0, 'intval') : 0;
-
-    	$model = new userModel();
-
-    	if($id > 0) {
-    		//是修改操作
-    		if($this->request->isPost()) {
-    			//是提交操作
-    			$post = $this->request->post();
-
-                $post['update_time'] = time();
-	            if(false == $model->allowField(true)->save($post,['id'=>$id])) {
-	            	return $this->error('修改失败');
-	            } else {
-                   
-	            	return $this->success('修改信息成功','admin/user/index');
-	            }
-    		} else {
-    			//非提交操作
-    			$info['user'] = $model->where('id',$id)->find();
-                $info['status'] = array(['status'=>0,'status_name'=>'正常'],['status'=>1,'status_name'=>'冻结']);
-    			$this->assign('info',$info);
-    			return $this->fetch();
-    		}
-    	} 
+    public function excelexport(){
+        
+        $data = Db::name('msg_used_car')
+                    ->alias('guc')
+                    ->join('gzj_user gu','guc.user_id = gu.id')
+                    ->field('guc.id,gu.nickname,guc.corporate_name,guc.contacts,guc.tele,guc.banking_hours,guc.attached_id,guc.longitude,guc.latitude,guc.addr,guc.car_brand,guc.car_type,guc.age_limit,guc.kilometres,guc.is_automatic,guc.car_color,guc.price,guc.car_attached_id,guc.create_time')
+                    ->select();
+       
+        $excelName = '二手车信息';
+        $Header = array('id','商家昵称','公司名称','联系人','联系电话','工作时间','附件信息','经度','纬度','详细地址','汽车品牌','汽车类型','使用年限','使用公里数','是否自动','车身颜色','价格','汽车图片附件','创建时间');
+        exportexcel($data,$Header,$excelName);
     }
-
     /**
      * 用户删除删除
      * @return [type] [description]

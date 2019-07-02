@@ -157,4 +157,5 @@ class Common extends Controller
             return $this->success('正在退出...','admin/common/login');
         }
     }
+
 }

@@ -31,6 +31,10 @@ class Businessvip extends Permissions
         if (isset($post['tetle']) and !empty($post['tetle'])) {
             $where['gu.login_user'] = ['like', '%' . $post['tetle'] . '%'];
         }
+
+        if (isset($post['wx_appid']) and !empty($post['wx_appid'])) {
+            $where['gu.wx_appid'] = ['like', '%' . $post['wx_appid'] . '%'];
+        }
  
         $where['gu.identity'] = 1;
         $date = $model->alias('gv')->join('gzj_user gu','gv.user_id = gu.id')->where($where)->order('gu.id desc')->field('gv.id,gv.expiration_time,gu.*')->paginate(20,false,['query'=>$this->request->param()]);
@@ -76,6 +80,22 @@ class Businessvip extends Permissions
     			return $this->fetch();
     		}
     	} 
+    }
+
+    public function excelexport(){
+        
+        $where['gu.identity']=1;
+        
+        $data = Db::name('svip')
+                    ->alias('gv')
+                    ->join('gzj_user gu','gv.user_id = gu.id')
+                    ->where($where)
+                    ->field('gv.id,gv.expiration_time,gu.login_user,gu.nickname,gu.wx_appid,gu.balance,gv.create_time')
+                    ->select();
+       
+        $excelName = '商家会员信息';
+        $Header = array('id','会员到期时间','登陆手机号','昵称','微信号','余额','创建时间');
+        exportexcel($data,$Header,$excelName);
     }
 
     /**

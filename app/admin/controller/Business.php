@@ -78,6 +78,21 @@ class Business extends Permissions
     	} 
     }
 
+    public function excelexport(){
+        
+        $where['identity']=1;
+        
+        $data = Db::name('user')->where($where)
+                    ->order('id')
+                    ->field('id,login_user,nickname,wx_appid,balance,create_time,status')
+                    ->select();
+       
+        $excelName = '商家会员信息';
+        $Header = array('商家id','手机号','昵称','微信号','余额','创建时间','状态');
+        exportexcel($data,$Header,$excelName);
+    }
+
+
     /**
      * 用户删除删除
      * @return [type] [description]

@@ -26,10 +26,12 @@
   <div class="tplay-body-div">
     <div class="layui-tab">
       <ul class="layui-tab-title">
-        <li class="layui-this">商家用户黑名单管理</li>
+        <li class="layui-this">个人黑名单管理</li>
       </ul>
     </div> 
-
+    <form class="layui-form" action="{:url('admin/userbacklist/personexcelexport')}" class="form-signin">
+      <button class="layui-btn  layui-btn-sm" style="margin: 0 10px;">导出数据</button>
+    </form> 
     <table class="layui-table" lay-size="sm">
       <thead>
         <tr>
@@ -37,9 +39,9 @@
           <th>用户手机号</th>
           <th>用户昵称</th>
           <th>用户微信号</th>
-          <th>商家手机号</th>
-          <th>商家昵称</th>
-          <th>商家微信号</th>
+          <th>黑名单商家手机号</th>
+          <th>黑名单商家昵称</th>
+          <th>黑名单商家微信号</th>
           <th>创建时间</th>
           <th>修改时间</th>
           <th>操作</th>

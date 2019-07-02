@@ -24,4 +24,6 @@ class User extends Model
     {
         return $this->hasOne('Svip');
     }
+
+    
 }

@@ -34,6 +34,15 @@
           <div class="layui-input-inline">
             <input type="text" name="keywords" lay-verify="title" autocomplete="off" placeholder="请输入商家名称" class="layui-input layui-btn-sm">
           </div>
+
+           <div class="layui-input-inline">
+            <input type="text" name="contacts" lay-verify="title" autocomplete="off" placeholder="请输入联系人名称" class="layui-input layui-btn-sm">
+          </div>
+
+           <div class="layui-input-inline">
+            <input type="text" name="tele" lay-verify="title" autocomplete="off" placeholder="请输入手机号码" class="layui-input layui-btn-sm">
+          </div>
+
           <div class="layui-input-inline">
             <div class="layui-inline">
                 <select name="type" lay-search="">
@@ -47,7 +56,10 @@
          
           <button class="layui-btn layui-btn-danger layui-btn-sm" lay-submit="" lay-filter="serch">立即提交</button>
         </div>
-      </form> 
+    </form>
+    <form class="layui-form" action="{:url('admin/store/excelexport')}" class="form-signin">
+      <button class="layui-btn  layui-btn-sm" style="margin: 0 10px;">导出数据</button>
+    </form> 
     <table class="layui-table" lay-size="sm">
       
       <thead>

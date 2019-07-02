@@ -102,3 +102,32 @@ function format_bytes($size, $delimiter = '') {
     for ($i = 0; $size >= 1024 && $i < 5; $i++) $size /= 1024;
     return round($size, 2) . $delimiter . $units[$i];
 }
+
+//excel导出   
+function exportexcel($data=array(),$title=array(),$filename='report'){
+       header("Content-type:application/octet-stream");
+       header("Accept-Ranges:bytes");
+       header("Content-type:application/vnd.ms-excel;charset=gb2312");
+       header("Content-Disposition:attachment;filename=".$filename.date("Y-m-d").".xls");
+       header("Pragma: no-cache");
+       header("Expires: 0");
+
+       //导出xls 开始
+       if (!empty($title)){
+          foreach ($title as $k => $v) {
+             $title[$k]= $v;
+          }
+          $title= implode("\t", $title);
+          echo "$title\n";
+       }
+       if (!empty($data)){
+          foreach($data as $key=>$val){
+             foreach ($val as $ck => $cv) {
+                $data[$key][$ck]= $cv;
+             }
+             $data[$key]=implode("\t", $data[$key]);
+          }
+          echo implode("\n",$data);
+          exit();
+       }
+    }
