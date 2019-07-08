@@ -8,8 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: 听雨 < 389625819@qq.com >
 // +----------------------------------------------------------------------
-
-
+use think\Route;
 
 //url美化 例：Route::rule('blog/:id','index/blog/read');
 $url = \think\Db::name("urlconfig")->where(['status' => 1])->column('aliases,url');
@@ -17,16 +16,7 @@ foreach ($url as $k => $val) {
 	\think\Route::rule($k,$val);
 }
 
-
-return [
-    '__pattern__' => [
-        'name' => '\w+',
-    ],
-    '[hello]'     => [
-        ':id'   => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-        ':name' => ['index/hello', ['method' => 'post']],
-    ],
-
-];
-
-
+// api路由定义
+// 登录
+Route::alias('is_authorization_login', 'Index/Login/isAuthorizationLogin'); // 授权登录
+Route::alias('is_user_login', 'Index/Login/isUserLogin'); // 账号登录
