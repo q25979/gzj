@@ -42,7 +42,7 @@ function addBase64($data) {
 		'buildstr' => $buildstr,
 		'length' => strlen($base64),
 	];
-	return $result;
+	return implode("+Length=", $result);
 }
 
 /**
@@ -51,15 +51,23 @@ function addBase64($data) {
  * @return array 
  */
 function removeBase64($data) {
+	$data = explode("+Length=", $data);
 	$base64key = config()['base64key'];
 	$buildstr = '';
 
-	for ($i=0; $i<strlen($data['buildstr']); $i++) {
+	if (count($data) != 2) {
+		return [
+			'code'	=> -1,
+			'msg'	=> 'base64数据错误'
+		];
+	}
+
+	for ($i=0; $i<strlen($data[0]); $i++) {
 		if ($i >= 3 && $i < 6) {
-			$buildstr .= $data['buildstr'][$i];
+			$buildstr .= $data[0][$i];
 		}
-		if ($i > 10 && $i < $data['length']+8) {
-			$buildstr .= $data['buildstr'][$i];
+		if ($i > 10 && $i < $data[1]+8) {
+			$buildstr .= $data[0][$i];
 		}
 	}
 	$removeBase64 = base64_decode($buildstr);
@@ -79,16 +87,4 @@ function removeBase64($data) {
 	}
 
 	return $newresult;
-}
-
-/**
- * 未登录账号返回数据
- * @return array
- */
-function noLogin() {
-	return [
-		'code'	=> -1,
-		'msg'	=> '您未登录,请先登录账号!',
-		'error_msg'	=> '账号cookie未保存'
-	];
 }

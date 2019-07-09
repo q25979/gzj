@@ -75,7 +75,7 @@ class Login
         } else {
             // 设置cookie
             $data['id'] = $uinfo['id'];
-            cookie('permit', addBase64($data));
+            $result['token'] = addBase64($data);
         }
 
     	return json($result);
@@ -85,7 +85,37 @@ class Login
     public function isUserLogin()
     {
         $post = request()->get();
+        $result = [
+            'code'  => 0,
+            'msg'   => '登录失败'
+        ];
 
-        return json($post);
+        // 验证信息
+        if (strlen($post['login_user']) > 11 || empty($post['login_user'])) {
+            $result['msg'] = '账号格式错误';
+            return json($result);
+        }
+        if (empty($post['login_pass']) || strlen($post['login_pass']) < 6) {
+            $result['msg'] = '密码格式错误';
+            return json($result);
+        }
+        if ($post['identity'] != 0 && $post['identity'] != 1) {
+            $result['code'] = -1;
+            $result['msg'] = '登录失败';
+            $result['error_msg'] = '用户登录身份错误必须为0或1';
+            return json($result);
+        }
+
+        $map['login_user'] = $post['login_user'];
+        $map['login_pass'] = $post['login_pass'];
+        $uinfo = User::where($map)->find();
+        if (empty($uinfo)) {
+            $result = [
+                'code'  => 0,
+                'msg'   => '账号或密码错误'
+            ];
+        }
+
+        return json($uinfo);
     }
 }

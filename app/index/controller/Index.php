@@ -5,21 +5,18 @@
 namespace app\index\controller;
 
 use app\common\model\User;
+use think\View;
 class Index extends Base
 {
-	public function __construct()
-	{
-		// 判断登录状态，需要判断的方法都需要添加上，如果全部控制器需要就在构造函数加上
-		parent::__construct();
-		if (!$this->isLogin()) {
-			json(noLogin())->send();
-			exit();
-		}
-	}
-
 	public function index()
 	{
-		echo 1;
+		$view = new View();
+		if (request()->isPost()) {
+			// 测试，$this->loginInfo() 判断登录信息，前端每次发送都需要header code
+			$info = $this->loginInfo();
+			return json($info);
+		}
+		return $view->fetch();
 	}
 
 	public function test()
