@@ -10,6 +10,9 @@ class Login
     // 微信授权登录
     public function isAuthorizationLogin()
     {
+        if (!request()->isPost) {
+            return json(notPostMsg());
+        }
     	$post = request()->post();
         $result = [
             'code'  => -1,
@@ -53,7 +56,7 @@ class Login
                 if ($uinfo['identity'] == 0) {
                     // 未认证商家用户登录
                     $result = [
-                        'code'  => 0,
+                        'code'  => 201,
                         'msg'   => '登录成功',
                         'data'  => '未认证商家用户登录'
                     ];
@@ -69,7 +72,7 @@ class Login
         }
         if ($uinfo['status'] != 0) {
             $result = [
-                'code'  => -1,
+                'code'  => 0,
                 'msg'   => '账号已被冻结,登录失败!',
             ];
         } else {
@@ -84,7 +87,10 @@ class Login
     // 账号登录
     public function isUserLogin()
     {
-        $post = request()->get();
+        if (!request()->isPost) {
+            return json(notPostMsg());
+        }
+        $post = request()->post();
         $result = [
             'code'  => 0,
             'msg'   => '登录失败'
@@ -107,15 +113,53 @@ class Login
         }
 
         $map['login_user'] = $post['login_user'];
-        $map['login_pass'] = $post['login_pass'];
+        $createTime = User::getFieldByLoginUser($map['login_user'], 'create_time');
+        $map['login_pass'] = md5($post['login_pass'].$createTime);
         $uinfo = User::where($map)->find();
         if (empty($uinfo)) {
             $result = [
                 'code'  => 0,
                 'msg'   => '账号或密码错误'
             ];
+        } else {
+            // 数据已存在判断账号的身份
+            if ($post['identity'] == 0) {
+                // 普通用户
+                $result = [
+                    'code' => 200,
+                    'msg'  => '登录成功',
+                    'data' => '普通用户身份登录'
+                ];
+            } elseif ($post['identity'] == 1) {
+                // 商家身份
+                if ($uinfo['identity'] == 0) {
+                    // 未认证商家用户登录
+                    $result = [
+                        'code'  => 201,
+                        'msg'   => '登录成功',
+                        'data'  => '未认证商家用户登录'
+                    ];
+                } elseif ($uinfo['identity'] == 1) {
+                    // 已认证商家用户登录
+                    $result = [
+                        'code'  => 200,
+                        'msg'   => '登录成功',
+                        'data'  => '已认证商家用户登录'
+                    ];
+                }
+            }
+        }
+        if ($uinfo['status'] != 0) {
+            $result = [
+                'code'  => 0,
+                'msg'   => '账号已被冻结,登录失败!',
+            ];
+        } else {
+            // 设置cookie
+            $data['id'] = $uinfo['id'];
+            $result['token'] = addBase64($data);
         }
 
-        return json($uinfo);
+        return json($result);
     }
 }

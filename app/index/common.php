@@ -88,3 +88,25 @@ function removeBase64($data) {
 
 	return $newresult;
 }
+
+/**
+ * @return array
+ */
+function notPostMsg() {
+	return [
+		'code'	=> 0,
+		'msg'	=> '错误请求',
+		'error_msg'	=> '您的请求不是POST请求'
+	];
+}
+
+/**
+ * @return array
+ */
+function notGetMsg() {
+	return [
+		'code'	=> 0,
+		'msg'	=> '错误请求',
+		'error_msg'	=> '您的请求不是GET请求'
+	];
+}
