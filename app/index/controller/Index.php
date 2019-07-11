@@ -14,8 +14,10 @@ class Index extends Base
 		if (request()->isPost()) {
 			// 测试，$this->loginInfo() 判断登录信息，前端每次发送都需要header code
 			$info = $this->loginInfo();
+			// $info['uid'] = $this->uid;
 			return json($info);
 		}
+		$view->id = $this->uid;
 		return $view->fetch();
 	}
 

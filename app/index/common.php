@@ -5,7 +5,8 @@
  * @param array $data
  * @return string 
  */
-function addBase64($data) {
+function addBase64($data)
+{
 	$string = "";
 	$base64key = config()['base64key'];
 
@@ -50,7 +51,8 @@ function addBase64($data) {
  * @param array $data
  * @return array 
  */
-function removeBase64($data) {
+function removeBase64($data)
+{
 	$data = explode("+Length=", $data);
 	$base64key = config()['base64key'];
 	$buildstr = '';
@@ -90,9 +92,11 @@ function removeBase64($data) {
 }
 
 /**
+ * 不是POST请求返回错误信息
  * @return array
  */
-function notPostMsg() {
+function notPostMsg()
+{
 	return [
 		'code'	=> 0,
 		'msg'	=> '错误请求',
@@ -101,12 +105,26 @@ function notPostMsg() {
 }
 
 /**
+ * 不是GET请求返回错误信息
  * @return array
  */
-function notGetMsg() {
+function notGetMsg()
+{
 	return [
 		'code'	=> 0,
 		'msg'	=> '错误请求',
 		'error_msg'	=> '您的请求不是GET请求'
 	];
+}
+
+/**
+ * 验证手机号
+ */
+function isMobile($mobile) {
+	if (empty($mobile) ||
+	!preg_match("/^1[34578]\d{9}$/", $mobile)) {
+		return false;
+	}
+
+	return true;
 }

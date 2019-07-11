@@ -1,13 +1,16 @@
-INDex
+Id = {$id}
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
 <script>
 	$.ajax({
-		url: '{:url("index")}',
-		data: {},
-		type: 'POST',
+		url: '/set_password',
+		type: 'post',
+		data: {
+			'login_pass': '123123',
+			'confirm_pass': '123123'
+		},
 		headers: {
-			'token': 'VUYaWQsiMsM9Pjg=97OXRrTr+Length=8'
+			'token': 'VUYaWQsiMsM9PjEy97OXRrTr+Length=8'
 		},
 		success: function(res) {
 			console.log(res)

@@ -56,7 +56,6 @@ class User extends Permissions
     {
     	//获取用户id
     	$id = $this->request->has('id') ? $this->request->param('id', 0, 'intval') : 0;
-
     	$model = new userModel();
 
     	if($id > 0) {
@@ -82,10 +81,9 @@ class User extends Permissions
     	} 
     }
 
-    public function excelexport(){
-        
+    public function excelexport()
+    {
         $where['identity']=0;
-        
         $data = Db::name('user')->where($where)
                     ->order('id')
                     ->field('id,login_user,nickname,wx_appid,balance,create_time,status')
