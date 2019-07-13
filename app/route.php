@@ -18,10 +18,16 @@ foreach ($url as $k => $val) {
 
 // api路由定义
 // 登录
-Route::alias('is_authorization_login', 'Index/Login/isAuthorizationLogin');	// 授权登录
-Route::alias('is_user_login', 'Index/Login/isUserLogin'); 	// 账号登录
-Route::alias('register', 'Index/Login/register'); 			// 账号注册
-Route::alias('code', 'Index/Login/code'); 	// 发送验证码
+Route::alias('is_authorization_login', 'Index/Login/isAuthorizationLogin');	// 授权登录 POST
+Route::alias('is_user_login', 'Index/Login/isUserLogin'); 	// 账号登录 POST
+Route::alias('register', 'Index/Login/register'); 			// 账号注册 POST
+Route::alias('code', 'Index/Login/code'); 	// 发送验证码 POST
 
 // 用户
-Route::alias('set_password', 'Index/Usersystem/userSetPassword');	// 设置密码
+Route::alias('set_password', 'Index/Usersystem/userSetPassword');	// 设置密码 POST
+
+// 公用
+Route::alias('upload', 'Index/Common/upload');	// 上传文件 POST
+
+// 商家
+Route::alias('perfect_business_info', 'Index/Business/perfectBuinessInfo');	// 完善商家信息 POST

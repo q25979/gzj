@@ -1,13 +1,23 @@
-Id = {$id}
+<form action="/upload" enctype="multipart/form-data" method="post">
+	<input type="file" name="filename" /> <br> 
+	<input type="submit" value="上传" /> 
+</form> 
 
 <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
 <script>
 	$.ajax({
-		url: '/set_password',
+		url: '/perfect_business_info',
 		type: 'post',
 		data: {
-			'login_pass': '123123',
-			'confirm_pass': '123123'
+			'type': 1,
+			'used_car_type': 0,
+			'corporate_name': '亿算网络科技',
+			'latitude': '212.222554',
+			'addr': '贵州亿算网络科技',
+			'contacts': '小意',
+			'tele': '13885578555',
+			'photos': 'photos',
+			'working_time': '全天24小时'
 		},
 		headers: {
 			'token': 'VUYaWQsiMsM9PjEy97OXRrTr+Length=8'
